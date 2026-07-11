@@ -73,17 +73,15 @@ That guardrail — knowing which regime you're in — is the point of the packag
 
 ## Install
 
-```bash
-pip install factorscope # core: numpy, scipy, pandas
-pip install factorscope[plot] # + matplotlib for diagnostic plots
-```
-
 Not yet on PyPI — until the first release, install from source:
 
 ```bash
 git clone https://github.com/mattecammel/factorscope
 pip install -e ./factorscope # add "[plot]" for plots, "[dev]" to run the tests
 ```
+
+Core dependencies are numpy, scipy and pandas; the `[plot]` extra adds matplotlib for the
+diagnostic plots.
 
 ## License
 
