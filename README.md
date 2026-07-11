@@ -19,8 +19,14 @@ fm = FactorModel(n_factors=5).fit(returns_df) # ragged panels (NaNs) are fine
 
 fm.trust_report() # is the rotation identifiable, or should you not believe the labels?
 fm.label() # -> F1 ~ +0.56*HML -0.41*SMB, F2 ~ +0.70*SMB -0.21*HML, ...
+fm.rotate_to(ff) # -> an interpretable basis: SMB |corr| 0.90, HML 0.79, ...
 fm.stability_report() # do the factors persist across refits, or churn?
 ```
+
+**See it on real data:** [`examples/case_study.ipynb`](examples/case_study.ipynb) runs the whole
+pipeline on Fama-French portfolios — the guardrail catching a market-dominated panel, blind
+rotation returning *blends*, `rotate_to()` recovering size (0.90) and value (0.79), and a
+negative control where the tool correctly finds **nothing**.
 
 ## Why it exists
 
@@ -33,6 +39,7 @@ cost six figures. `factorscope` fills the gap with an honest, sklearn-style API.
 | Feature | Method | What it does |
 |---|---|---|
 | **Factor labeling** | `.label()` | Regress each factor on known style/macro factors → named factors + R² |
+| **Interpretable basis** | `.rotate_to()` | Procrustes rotation onto reference factors → *named* axes, without changing the fitted model |
 | **Missing-data PCA** | `missing="em"` | EM-PCA builds the subspace from ragged return panels |
 | **Trust guardrail** | `.trust_report()` | Regime + identifiability margin → *should you believe the labels?* |
 | **Stability monitor** | `.stability_report()` | Rolling-refit persistence of factor identity, SOBI vs PCA |
@@ -46,10 +53,15 @@ Time-structure rotation is **not** magic, and this library says so:
 - On a **raw, market-dominated** panel, the market owns ~70% of the variance, PCA is already
   identified, and rotating only adds noise. `factorscope` detects this (`neutralize="auto"`)
   and removes the market first — turning the failure case into the success case.
-- On a **market-neutral** panel with real style structure, SOBI recovers the named factors
-  better than raw PCA (see [`examples/fama_french_demo.ipynb`](examples/fama_french_demo.ipynb),
-  a full walkthrough on real Fama-French data). On a panel that doesn't contain the factors,
-  it correctly recovers *nothing* rather than hallucinating.
+- **Blind rotation does not hand you named factors.** On real data SOBI returns *blends* — two
+  factors that are both size/value mixtures, not one "size" and one "value". That's a genuine
+  limitation of the method (SOBI optimizes for *distinct dynamics*, which is not the same thing
+  as *economic interpretability*), and the case study shows it rather than hiding it. If you want
+  names, use `.rotate_to()`: an orthogonal Procrustes rotation onto reference factors that is
+  provably a **change of basis, not a change of model** (the `S Bᵀ` reconstruction is unchanged
+  to machine precision).
+- On a panel that **doesn't contain** the factors (industry portfolios), it correctly recovers
+  *nothing* rather than hallucinating — the negative control in the case study.
 - If the factor dynamics are too weak to separate, `.trust_report()` says **"do not trust
   the labels"** instead of silently returning garbage. The "too weak" bar is not a magic
   constant: it is the 95th percentile of the margin you'd get by rotating **pure noise**,

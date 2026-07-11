@@ -6,8 +6,9 @@ pytest.importorskip("matplotlib")
 import matplotlib
 matplotlib.use("Agg")
 
-from factorscope import FactorModel
-from factorscope.plotting import plot_labels, plot_stability
+from factorscope import FactorModel, suggest_n_factors
+from factorscope.plotting import (
+    plot_labels, plot_stability, plot_margin, plot_scree, plot_target_corr)
 
 
 def _fitted():
@@ -35,4 +36,23 @@ def test_plot_labels_runs():
 def test_plot_stability_runs():
     fm, _ = _fitted()
     ax = plot_stability(fm.stability_report(window=400, step=200))
+    assert ax is not None
+
+
+def test_plot_margin_runs():
+    fm, _ = _fitted()
+    ax = plot_margin(fm.trust_report())
+    assert ax is not None
+
+
+def test_plot_scree_runs():
+    fm, _ = _fitted()
+    sel = suggest_n_factors(fm._Xu)
+    ax = plot_scree(sel)
+    assert ax is not None
+
+
+def test_plot_target_corr_runs():
+    fm, ref = _fitted()
+    ax = plot_target_corr(fm.rotate_to(ref))
     assert ax is not None

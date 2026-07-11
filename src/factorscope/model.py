@@ -9,6 +9,7 @@ from .decomposition import _nanmean, em_pca, market_neutralize, pca_scores, proj
 from .rotation import DEFAULT_LAGS, amuse, sobi
 from .identifiability import build_trust_report, detect_regime
 from .labeling import label_factors
+from .target import target_rotation
 from .stability import rolling_stability
 from .alignment import align_factors
 from .selection import suggest_n_factors
@@ -120,6 +121,13 @@ class FactorModel:
             from .reference import load_reference_factors
             reference = load_reference_factors("ff5")
         return label_factors(self.factors_, reference, top_k=top_k)
+
+    def rotate_to(self, reference=None):
+        self._check_fitted()
+        if reference is None:
+            from .reference import load_reference_factors
+            reference = load_reference_factors("ff5")
+        return target_rotation(self.factors_, self.loadings_, reference)
 
     def stability_report(self, returns=None, *, window=750, step=125):
         self._check_fitted()

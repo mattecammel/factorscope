@@ -38,3 +38,55 @@ def plot_stability(stability_result, ax=None):
     ax.legend(frameon=False)
     ax.set_title("factor identity persistence across refits")
     return ax
+
+
+def plot_margin(trust_report, ax=None):
+    plt = _mpl()
+    ax = ax or plt.subplots(figsize=(6, 4))[1]
+    tr = trust_report
+    snr = np.asarray(tr.per_factor_snr, float)
+    finite = np.isfinite(snr)
+    x = np.arange(1, len(snr) + 1)[finite]
+    vals = snr[finite]
+    colors = ["#2b8cbe" if v >= tr.margin_threshold else "#d7301f" for v in vals]
+    ax.bar(x, vals, color=colors)
+    ax.axhline(tr.margin_threshold, ls="--", color="black",
+               label=f"{tr.null_model} noise floor = {tr.margin_threshold:.1f}")
+    ax.set_xticks(x, [f"F{i}" for i in x])
+    ax.set_xlabel("factor")
+    ax.set_ylabel("separation from nearest factor (std errors)")
+    ax.legend(frameon=False)
+    ax.set_title("identifiability: which factors clear the noise floor?")
+    return ax
+
+
+def plot_scree(selection_result, ax=None, k_max=20):
+    plt = _mpl()
+    ax = ax or plt.subplots(figsize=(6, 4))[1]
+    ev = np.asarray(selection_result.eigenvalues, float)
+    share = ev / ev.sum()
+    n = int(min(k_max, len(share)))
+    x = np.arange(1, n + 1)
+    ax.bar(x, share[:n], color="#7fcdbb")
+    ax.axvline(selection_result.n_suggested + 0.5, ls="--", color="black",
+               label=f"suggested k = {selection_result.n_suggested}")
+    ax.set_xlabel("component")
+    ax.set_ylabel("variance share")
+    ax.legend(frameon=False)
+    ax.set_title("eigenvalue spectrum")
+    return ax
+
+
+def plot_target_corr(target_result, ax=None):
+    plt = _mpl()
+    ax = ax or plt.subplots(figsize=(6, 4))[1]
+    c = target_result.corr.sort_values()
+    y = np.arange(len(c))
+    ax.barh(y, c.values, color="#2b8cbe")
+    ax.set_yticks(y, list(c.index))
+    ax.set_xlim(0, 1)
+    ax.set_xlabel("|corr| between rotated factor and its reference")
+    ax.set_title("how much of each reference factor lives in the subspace?")
+    for yi, v in zip(y, c.values):
+        ax.text(v + 0.02, yi, f"{v:.2f}", va="center", fontsize=9)
+    return ax

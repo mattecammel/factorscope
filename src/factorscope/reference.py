@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import re
 import urllib.request
+import warnings
 import zipfile
 
 import numpy as np
@@ -42,6 +43,8 @@ def _parse_daily(text, ncols):
                 break
             continue
         vals = [p.strip() for p in line.split(",")][1:]
+        while vals and vals[-1] == "":
+            vals.pop()
         if len(vals) != ncols:
             if started:
                 break
@@ -67,10 +70,14 @@ def load_reference_factors(kind="ff5", start=None, end=None, include_momentum=Tr
     if include_momentum:
         try:
             mom = _parse_daily(_fetch_zip_csv(_FILES["mom"][0]), 1)
+            if mom.empty:
+                raise ValueError("momentum file parsed to zero rows")
             mom.columns = ["Mom"]
             df = df.join(mom, how="left")
-        except Exception:
-            pass
+        except Exception as e:
+            warnings.warn(f"could not load the momentum reference factor ({e}); "
+                          "labels will not include 'Mom'. Pass include_momentum=False "
+                          "to silence this.", stacklevel=2)
     df = df.dropna(how="all")
     if start is not None:
         df = df.loc[df.index >= pd.to_datetime(start)]

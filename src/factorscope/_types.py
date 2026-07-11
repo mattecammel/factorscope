@@ -47,6 +47,28 @@ class LabelResult:
 
 
 @dataclass
+class TargetRotationResult:
+    factors: pd.DataFrame
+    loadings: pd.DataFrame
+    corr: pd.Series
+    subspace_r2: pd.Series
+    rotation: np.ndarray
+    dropped: List[str] = field(default_factory=list)
+
+    def __repr__(self):
+        rows = [f"  {n:<8} |corr| with reference = {self.corr[n]:.2f}"
+                for n in self.corr.index]
+        out = ["TargetRotationResult (Procrustes rotation onto reference factors)"] + rows
+        resid = [c for c in self.factors.columns if c not in self.corr.index]
+        if resid:
+            out.append(f"  residual (unaligned) factors: {', '.join(resid)}")
+        if self.dropped:
+            out.append(f"  references not aligned (fewer factors than references): "
+                       f"{', '.join(self.dropped)}")
+        return "\n".join(out)
+
+
+@dataclass
 class StabilityResult:
     sobi: np.ndarray
     pca: np.ndarray
