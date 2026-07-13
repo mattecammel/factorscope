@@ -220,9 +220,7 @@ MIT © Matteo Camellini
 
 ---
 
-## Topics
-
-<sub>Statistical risk model · PCA factor model · rotational indeterminacy · factor identification ·
+<sub>**Topics:** Statistical risk model · PCA factor model · rotational indeterminacy · factor identification ·
 factor interpretation · blind source separation · SOBI (second-order blind identification) ·
 AMUSE · joint diagonalization · orthogonal Procrustes rotation · target rotation · factor labeling<\sub>
 factor rotation · latent factor model · principal component analysis · EM-PCA · missing data ·
