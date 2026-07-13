@@ -228,4 +228,4 @@ ragged panel · Fama–French factors · size and value factors · style factors
 market neutralization · eigenvalue spectrum · factor selection · scree criterion · noise floor ·
 block bootstrap · surrogate data · heteroskedasticity · volatility clustering · factor stability ·
 rolling refit · Hungarian algorithm · quantitative finance · asset pricing · portfolio risk ·
-Python · NumPy · SciPy · pandas · scikit-learn-style API <\sub>
+Python · NumPy · SciPy · pandas · scikit-learn-style API</sub>
