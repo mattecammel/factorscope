@@ -201,13 +201,7 @@ pip install -e ./factorscope        # "[plot]" adds matplotlib diagnostics; "[de
 
 ## 7. Citation
 
-If you use `factorscope` in academic work, please cite it as:
-
-> Camellini, M. (2026). *factorscope: identification, interpretation, and diagnostics for
-> statistical risk factor models* (Version 0.1.0) [Computer software].
-> https://github.com/mattecammel/factorscope
-
-BibTeX:
+If this work or its calibration procedure is useful to you:
 
 ```bibtex
 @software{camellini2026factorscope,
@@ -228,9 +222,9 @@ MIT © Matteo Camellini
 
 ## Topics
 
-Statistical risk model · PCA factor model · rotational indeterminacy · factor identification ·
+<sub>Statistical risk model · PCA factor model · rotational indeterminacy · factor identification ·
 factor interpretation · blind source separation · SOBI (second-order blind identification) ·
-AMUSE · joint diagonalization · orthogonal Procrustes rotation · target rotation · factor labeling ·
+AMUSE · joint diagonalization · orthogonal Procrustes rotation · target rotation · factor labeling<\sub>
 factor rotation · latent factor model · principal component analysis · EM-PCA · missing data ·
 ragged panel · Fama–French factors · size and value factors · style factors · equity risk model ·
 market neutralization · eigenvalue spectrum · factor selection · scree criterion · noise floor ·
