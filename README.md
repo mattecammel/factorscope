@@ -222,10 +222,10 @@ MIT © Matteo Camellini
 
 <sub>**Topics:** Statistical risk model · PCA factor model · rotational indeterminacy · factor identification ·
 factor interpretation · blind source separation · SOBI (second-order blind identification) ·
-AMUSE · joint diagonalization · orthogonal Procrustes rotation · target rotation · factor labeling<\sub>
+AMUSE · joint diagonalization · orthogonal Procrustes rotation · target rotation · factor labeling ·
 factor rotation · latent factor model · principal component analysis · EM-PCA · missing data ·
 ragged panel · Fama–French factors · size and value factors · style factors · equity risk model ·
 market neutralization · eigenvalue spectrum · factor selection · scree criterion · noise floor ·
 block bootstrap · surrogate data · heteroskedasticity · volatility clustering · factor stability ·
 rolling refit · Hungarian algorithm · quantitative finance · asset pricing · portfolio risk ·
-Python · NumPy · SciPy · pandas · scikit-learn-style API
+Python · NumPy · SciPy · pandas · scikit-learn-style API <\sub>
