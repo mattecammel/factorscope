@@ -216,7 +216,7 @@ If this work or its calibration procedure is useful to you:
 
 ## License
 
-MIT © Matteo Camellini
+MIT 
 
 ---
 
